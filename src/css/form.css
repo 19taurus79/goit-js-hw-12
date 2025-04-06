@@ -7,7 +7,11 @@ input {
     padding: 4px;
     box-sizing: border-box;
   }
-
+.form{
+display: flex;
+justify-content: center;
+padding: 20px 0;
+}
 .form input{
 border: 1px solid #808080;
 border-radius: 4px;
@@ -32,4 +36,12 @@ color: #fff;
 
 button:hover{
     background: #6c8cff;
+}
+.load-more-wraper{
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+.load-more-hidden{
+    display: none;
 }
