@@ -14,27 +14,32 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 const gallery = document.querySelector('.gallery');
 const loader = document.querySelector('.loader');
 const loadMore = document.querySelector('.load-more');
-export async function createGallery(images) {
-    const items = await images;
+export async function createGallery(imagesPromise) {
+  try {
+    const items = await imagesPromise; // Ожидаем выполнения промиса
     console.log('createGallery', items);
-  
-  const markup = items.hits
-    .map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
-      return `<li class="gallery-item"><a href="${largeImageURL}">
-            <img class="gallery-image" src="${webformatURL}" alt="${tags}" />
-            <div class='item-footer'>
-            <p><b>likes</b> ${likes}</p>
-            <p><b>views</b> ${views}</p>
-            <p><b>comments</b> ${comments}</p>
-            <p><b>downloads</b> ${downloads}</p>
-            </div>
-        </a>
-       
-        </li>`;
-    })
-    .join('');
-  gallery.innerHTML = markup;
-  lightbox.refresh();
+
+    const markup = items
+      .map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
+        return `<li class="gallery-item">
+                  <a href="${largeImageURL}">
+                    <img class="gallery-image" src="${webformatURL}" alt="${tags}" />
+                    <div class='item-footer'>
+                      <p><b>likes</b> ${likes}</p>
+                      <p><b>views</b> ${views}</p>
+                      <p><b>comments</b> ${comments}</p>
+                      <p><b>downloads</b> ${downloads}</p>
+                    </div>
+                  </a>
+                </li>`;
+      })
+      .join('');
+
+    gallery.innerHTML = markup; // Добавляем разметку в контейнер галереи
+    lightbox.refresh(); // Обновляем SimpleLightbox
+  } catch (error) {
+    console.error('Error creating gallery:', error); // Логируем ошибку, если что-то пошло не так
+  }
 }
 export function clearGallery() {
   gallery.innerHTML = '';

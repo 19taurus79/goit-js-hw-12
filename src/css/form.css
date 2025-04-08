@@ -11,12 +11,14 @@ input {
 display: flex;
 justify-content: center;
 padding: 20px 0;
+gap: 8px;
 }
 .form input{
 border: 1px solid #808080;
 border-radius: 4px;
 width: 272px;
 height: 40px;
+padding: 8px;
 }
 .form input:hover{
 border: 1px solid #000;
