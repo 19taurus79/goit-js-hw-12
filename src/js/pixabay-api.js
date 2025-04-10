@@ -11,7 +11,7 @@ const PIXABAY_PARAMS = {
   per_page: 15,
 };
 
-export async function getImagesByQuery(query, page) {
+export async function getImagesByQuery(query, page = 1) {
   try {
     const response = await axios.get(`${PIXABAY_API_URL}`, {
       params: {
@@ -32,11 +32,22 @@ export async function getImagesByQuery(query, page) {
     //     timeout: 3000,
     //   });
     // }
-console.log(response);
+    console.log(response);
+    console.log(response.data.totalHits);
+    console.log(response.config.params.page);
+    console.log(response.config.params.per_page);
+    console.log(countTotalPages(response));
     return response.data;
   } catch (error) {
     console.error('Error fetching data from Pixabay:', error);
   } finally {
     // hideLoader();
   }
+}
+
+function countTotalPages(data) {
+  const totalPages = Math.ceil(
+    data.data.totalHits / data.config.params.per_page
+  );
+  return totalPages;
 }
