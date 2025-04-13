@@ -24,28 +24,25 @@ export async function getImagesByQuery(query, page = 1) {
         per_page: PIXABAY_PARAMS.per_page,
       },
     });
-
-    // if (response.data.hits.length === 0) {
-    //   iziToast.error({
-    //     message: 'Sorry, there are no images matching your search query. Please try again!',
-    //     position: 'topCenter',
-    //     timeout: 3000,
-    //   });
-    // }
-    console.log(response);
-    console.log(response.data.totalHits);
-    console.log(response.config.params.page);
-    console.log(response.config.params.per_page);
-    console.log(countTotalPages(response));
-    return response.data;
+    // console.log('response', response);
+    // console.log('totalHits', response.data.totalHits);
+    // console.log('page', response.config.params.page);
+    // console.log('per-page', response.config.params.per_page);
+    // console.log('total pages', countTotalPagesTest(response));
+    console.log('response_func', response);
+    // return response.data;
+    return {
+      data: response.data,
+      totalPages: countTotalPagesTest(response),
+      page: response.config.params.page,
+    };
   } catch (error) {
     console.error('Error fetching data from Pixabay:', error);
   } finally {
-    // hideLoader();
   }
 }
 
-function countTotalPages(data) {
+function countTotalPagesTest(data) {
   const totalPages = Math.ceil(
     data.data.totalHits / data.config.params.per_page
   );
