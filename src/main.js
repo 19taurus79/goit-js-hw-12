@@ -10,14 +10,15 @@ import {
   showLoadMoreButton,
 } from './js/render-functions';
 import iziToast from 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
 const form = document.querySelector('.form');
 const loadMoreBtn = document.querySelector('.load-more');
-import 'izitoast/dist/css/iziToast.min.css';
-let inputValue = '';
-let page = 10;
+let inputValue = null;
+let page = null;
 
 form.addEventListener('submit', async event => {
   event.preventDefault();
+  page = 1;
   inputValue = form.elements['search-text'].value;
   clearGallery();
   if (inputValue === '') {
@@ -35,7 +36,7 @@ form.addEventListener('submit', async event => {
   // if (page === totalPages) {
   //   hideLoadMoreButton();
   // }
-  console.log('DATA', data);
+  // console.log('DATA', await data);
   data
     .then(response => {
       console.log('response!!!', response);
@@ -49,7 +50,7 @@ form.addEventListener('submit', async event => {
         return;
       }
       console.log('response_main', response);
-      createGallery(response.data.hits);
+      createGallery(response);
       showLoadMoreButton();
     })
     .catch(() => {
@@ -63,23 +64,16 @@ form.addEventListener('submit', async event => {
       hideLoader();
     });
   form.reset();
-  function loadMore() {
-    page += 1;
-    return page;
-  }
-  function loadMore() {
-    page += 1;
-    return page;
-  }
+  
 });
 
-// async function countTotalPages(data) {
-//   console.log('countTotalPages', data);
-//   const response = await data; // Ждем завершения промиса
-//   const totalPages = Math.ceil(
-//     response.data.totalHits / response.config.params.per_page
-//   );
-//   console.log('total pages from func', totalPages);
+loadMoreBtn.addEventListener('click', onLoadMoreBtnClick);
 
-//   return totalPages; // Возвращаем результат
-// }
+async function onLoadMoreBtnClick() {
+  page +=1;
+  console.log('click');
+  showLoader();
+  const data = await getImagesByQuery(inputValue, page);
+  createGallery(data);
+  hideLoader();
+}

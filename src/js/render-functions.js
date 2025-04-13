@@ -18,8 +18,8 @@ export async function createGallery(imagesPromise) {
   try {
     const items = await imagesPromise; // Ожидаем выполнения промиса
     console.log('createGallery', items);
-
-    const markup = items
+    console.log('items', items.hits); // Логируем массив hits
+    const markup = items.hits // Извлекаем массив hits из ответа
       .map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
         return `<li class="gallery-item">
                   <a href="${largeImageURL}">
@@ -36,6 +36,9 @@ export async function createGallery(imagesPromise) {
       .join('');
 
     gallery.innerHTML = markup; // Добавляем разметку в контейнер галереи
+    if (items.page === items.totalPages) {
+      hideLoadMoreButton(); // Скрываем кнопку "Load more", если достигли последней страницы
+    }
     lightbox.refresh(); // Обновляем SimpleLightbox
   } catch (error) {
     console.error('Error creating gallery:', error); // Логируем ошибку, если что-то пошло не так

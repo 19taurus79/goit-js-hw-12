@@ -11,7 +11,7 @@ const PIXABAY_PARAMS = {
   per_page: 15,
 };
 
-export async function getImagesByQuery(query, page = 1) {
+export async function getImagesByQuery(query, page) {
   try {
     const response = await axios.get(`${PIXABAY_API_URL}`, {
       params: {
@@ -33,6 +33,7 @@ export async function getImagesByQuery(query, page = 1) {
     // return response.data;
     return {
       data: response.data,
+      hits: response.data.hits,
       totalPages: countTotalPagesTest(response),
       page: response.config.params.page,
     };
