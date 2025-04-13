@@ -15,11 +15,12 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 const gallery = document.querySelector('.gallery');
 const loader = document.querySelector('.loader');
 const loadMore = document.querySelector('.load-more');
+
 export async function createGallery(imagesPromise) {
   try {
     const items = await imagesPromise; // Ожидаем выполнения промиса
-    console.log('createGallery', items);
-    console.log('items', items.hits); // Логируем массив hits
+    // console.log('createGallery', items);
+    // console.log('items', items.hits); // Логируем массив hits
     const markup = items.hits // Извлекаем массив hits из ответа
       .map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
         return `<li class="gallery-item">
@@ -37,6 +38,7 @@ export async function createGallery(imagesPromise) {
       .join('');
 
     gallery.insertAdjacentHTML('beforeend', markup); // Добавляем разметку в контейнер галереи
+    
     if (items.page === items.totalPages) {
       hideLoadMoreButton(); // Скрываем кнопку "Load more", если достигли последней страницы
       iziToast.info({

@@ -39,7 +39,7 @@ form.addEventListener('submit', async event => {
   // console.log('DATA', await data);
   data
     .then(response => {
-      console.log('response!!!', response);
+      // console.log('response!!!', response);
       if (response.data.hits.length === 0) {
         iziToast.error({
           message:
@@ -49,7 +49,7 @@ form.addEventListener('submit', async event => {
         });
         return;
       }
-      console.log('response_main', response);
+      // console.log('response_main', response);
       createGallery(response);
       showLoadMoreButton();
     })
@@ -71,7 +71,10 @@ loadMoreBtn.addEventListener('click', onLoadMoreBtnClick);
 
 async function onLoadMoreBtnClick() {
   page += 1;
-  console.log('click');
+  // console.log('click');
+  const galery_item = document.querySelector('.gallery-item');
+  const galery_item_height = galery_item.getBoundingClientRect().height;
+  // console.log('galery_item_height', galery_item_height);
   
   // Перемещаем loader-wraper после галереи
   const loaderWrapper = document.querySelector('.loader-wraper');
@@ -82,6 +85,18 @@ async function onLoadMoreBtnClick() {
   try {
     const data = await getImagesByQuery(inputValue, page);
     createGallery(data);
+
+    requestAnimationFrame(() => {
+      const galery_item = document.querySelector('.gallery-item');
+      const galery_item_height = galery_item.getBoundingClientRect().height;
+
+      window.scrollBy({
+        left: 0,
+        top: galery_item_height * 2,
+        behavior: 'smooth',
+      });
+    });
+    
   } catch (error) {
     iziToast.error({
       message: 'Error fetching data from Pixabay',
@@ -90,5 +105,6 @@ async function onLoadMoreBtnClick() {
     });
   } finally {
     hideLoader();
+   
   }
 }

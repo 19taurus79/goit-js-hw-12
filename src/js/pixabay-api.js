@@ -29,7 +29,7 @@ export async function getImagesByQuery(query, page) {
     // console.log('page', response.config.params.page);
     // console.log('per-page', response.config.params.per_page);
     // console.log('total pages', countTotalPagesTest(response));
-    console.log('response_func', response);
+    // console.log('response_func', response);
     // return response.data;
     return {
       data: response.data,
