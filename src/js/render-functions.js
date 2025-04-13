@@ -7,6 +7,7 @@
 // showLoadMoreButton(). Ця функція нічого не приймає, повинна додавати клас для відображення кнопки Load more. Нічого не повертає.
 // hideLoadMoreButton(). Ця функція нічого не приймає, повинна прибирати клас для відображення кнопки Load more. Нічого не повертає.
 // Описаний у документації
+import iziToast from 'izitoast';
 import SimpleLightbox from 'simplelightbox';
 // Додатковий імпорт стилів
 import 'simplelightbox/dist/simple-lightbox.min.css';
@@ -35,9 +36,14 @@ export async function createGallery(imagesPromise) {
       })
       .join('');
 
-    gallery.innerHTML = markup; // Добавляем разметку в контейнер галереи
+    gallery.insertAdjacentHTML('beforeend', markup); // Добавляем разметку в контейнер галереи
     if (items.page === items.totalPages) {
       hideLoadMoreButton(); // Скрываем кнопку "Load more", если достигли последней страницы
+      iziToast.info({
+        message: "We're sorry, but you've reached the end of search results.",
+        position: 'topRight',
+        timeout: 2000,
+      });
     }
     lightbox.refresh(); // Обновляем SimpleLightbox
   } catch (error) {

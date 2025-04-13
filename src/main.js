@@ -70,10 +70,25 @@ form.addEventListener('submit', async event => {
 loadMoreBtn.addEventListener('click', onLoadMoreBtnClick);
 
 async function onLoadMoreBtnClick() {
-  page +=1;
+  page += 1;
   console.log('click');
+  
+  // Перемещаем loader-wraper после галереи
+  const loaderWrapper = document.querySelector('.loader-wraper');
+  const gallery = document.querySelector('.gallery');
+  gallery.insertAdjacentElement('afterend', loaderWrapper);
+
   showLoader();
-  const data = await getImagesByQuery(inputValue, page);
-  createGallery(data);
-  hideLoader();
+  try {
+    const data = await getImagesByQuery(inputValue, page);
+    createGallery(data);
+  } catch (error) {
+    iziToast.error({
+      message: 'Error fetching data from Pixabay',
+      position: 'topCenter',
+      timeout: 3000,
+    });
+  } finally {
+    hideLoader();
+  }
 }
